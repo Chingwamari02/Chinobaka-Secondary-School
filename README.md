@@ -1,37 +1,35 @@
-# 🏫 Chinobaka Secondary School Website
+# Chinobaka Secondary School Website
 
-A web application and official portal for **Chinobaka Secondary School**, a Zion Christian Church (ZCC) institution offering O-Level and A-Level education alongside boarding facilities in Chikanga, Mutare (Manicaland, Zimbabwe).
+This is the current working Flask version of the Chinobaka Secondary School website/system.
 
-## 📌 Project Overview
+## Start the project
 
-This project provides a modern, responsive web portal designed to serve prospective parents, current students, staff, and church stakeholders. It highlights the school's academic pathways, ZCC Christian values, boarding life, and streamlined online admissions.
+From this folder:
 
-## ✨ Key Features
+```powershell
+py -m pip install -r requirements.txt
+py run.py
+```
 
-- **🎓 Academic Programs Display:** Detailed subject streams for both **O-Level** (Core, Technical, Commercials) and **A-Level** (Sciences, Commercials, Arts).
-- **🏡 Boarding & Student Life:** Comprehensive info on hostel infrastructure, daily schedules, sports, and ZCC spiritual devotions.
-- **📝 Online Admissions Portal:** Interactive application form for Form 1 and Lower 6 candidates (Day & Boarding).
-- **📄 Download Center:** Direct access to PDF fee schedules, term calendars, uniform specifications, and boarding checklists.
-- **🛡 Secure Backend & Database:** Python backend with parameterized SQL queries to handle admissions data safely and prevent SQL Injection attacks.
+Then open `http://127.0.0.1:5000`.
 
-## 🛠️ Tech Stack
+First-time administrator setup: `/admin/setup`.
 
-- **Frontend:** HTML5, CSS3, JavaScript (Jinja2 Templates)
-- **Backend:** Python 3.x (Flask / FastAPI)
-- **Database:** MySQL (via `mysql-connector-python` / SQLAlchemy ORM)
-- **Environment:** Python Virtual Environment (`venv`)
+This version intentionally does **not** require Flask-Migrate commands. The SQLite database tables are created automatically when the application starts.
 
-## 📂 Directory Structure
+## Important structure
 
-```text
-chinobaka-school/
-├── app/
-│   ├── static/          # CSS, JS, and image assets
-│   ├── templates/       # HTML templates (Jinja2)
-│   ├── routes.py        # Application routes & API endpoints
-│   ├── database.py      # Database connection & queries
-│   └── models.py        # Data models
-├── uploads/             # Submitted application attachments
-├── app.py               # Application entry point
-├── requirements.txt     # Python dependencies
-└── README.md
+The Flask package is `app/`. There must not be an `app/app/` folder.
+
+## Current modules
+
+- Public school pages
+- Admin login and first-time setup
+- News management
+- Events management
+- Gallery management
+- Staff/leadership management
+- Downloads management
+- Contact messages
+- School settings/branding
+- Image and document uploads

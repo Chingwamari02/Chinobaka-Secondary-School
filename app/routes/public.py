@@ -1,0 +1,42 @@
+from flask import Blueprint,render_template,request,redirect,url_for,flash,send_from_directory,current_app
+from ..extensions import db
+from ..models import *
+public_bp=Blueprint('public',__name__)
+def settings():
+ s=SiteSetting.query.first()
+ if not s:s=SiteSetting();db.session.add(s);db.session.commit()
+ return s
+@public_bp.get('/')
+def home():return render_template('public/home.html',settings=settings(),news=News.query.filter_by(status='published').order_by(News.published_at.desc()).limit(3).all(),events=Event.query.order_by(Event.event_date.asc()).limit(3).all(),gallery=GalleryItem.query.order_by(GalleryItem.created_at.desc()).limit(6).all())
+@public_bp.get('/about')
+def about():return render_template('public/about.html',settings=settings())
+@public_bp.get('/academics')
+def academics():return render_template('public/academics.html',settings=settings())
+@public_bp.get('/admissions')
+def admissions():return render_template('public/admissions.html',settings=settings())
+@public_bp.get('/student-life')
+def student_life():return render_template('public/student_life.html',settings=settings())
+@public_bp.get('/news')
+def news():return render_template('public/news.html',settings=settings(),items=News.query.filter_by(status='published').order_by(News.published_at.desc()).all())
+@public_bp.get('/news/<slug>')
+def news_detail(slug):return render_template('public/news_detail.html',settings=settings(),item=News.query.filter_by(slug=slug,status='published').first_or_404())
+@public_bp.get('/events')
+def events():return render_template('public/events.html',settings=settings(),items=Event.query.order_by(Event.event_date.asc()).all())
+@public_bp.get('/gallery')
+def gallery():return render_template('public/gallery.html',settings=settings(),items=GalleryItem.query.order_by(GalleryItem.created_at.desc()).all())
+@public_bp.get('/leadership')
+def leadership():return render_template('public/leadership.html',settings=settings(),items=StaffMember.query.order_by(StaffMember.sort_order,StaffMember.name).all())
+@public_bp.get('/downloads')
+def downloads():return render_template('public/downloads.html',settings=settings(),items=Download.query.order_by(Download.created_at.desc()).all())
+@public_bp.route('/contact',methods=['GET','POST'])
+def contact():
+ s=settings()
+ if request.method=='POST':
+  m=ContactMessage(name=request.form.get('name','').strip(),email=request.form.get('email','').strip(),phone=request.form.get('phone','').strip(),subject=request.form.get('subject','').strip(),message=request.form.get('message','').strip())
+  if not m.name or not m.email or not m.message:flash('Please complete the required fields.','error')
+  else:db.session.add(m);db.session.commit();flash('Your message has been received.','success');return redirect(url_for('public.contact'))
+ return render_template('public/contact.html',settings=s)
+@public_bp.get('/uploads/images/<path:filename>')
+def image(filename):return send_from_directory(current_app.config['UPLOAD_IMAGE_FOLDER'],filename)
+@public_bp.get('/uploads/documents/<path:filename>')
+def document(filename):return send_from_directory(current_app.config['UPLOAD_DOCUMENT_FOLDER'],filename)
