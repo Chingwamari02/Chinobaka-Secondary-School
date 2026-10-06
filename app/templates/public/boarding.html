@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Boarding Facilities | {{ settings.school_name }}{% endblock %}
+{% block content %}
+<section class="pagehero"><div class="container narrow"><span class="eyebrow">STUDENT ACCOMMODATION</span><h1>Boarding Facilities</h1><p>Explore the boarding environment, facilities and learner support available at {{ settings.school_name }}.</p></div></section>
+<section class="section"><div class="container">
+  <div class="section-heading centered"><span class="eyebrow blue">BOARDING LIFE</span><h2>A safe place to learn, rest and grow.</h2><p>Official boarding details can be updated by the school administration.</p></div>
+  <div class="cards">
+  {% for item in facilities %}
+    <article class="card">
+      {% if item.image_filename %}<img src="{{ url_for('public.image', filename=item.image_filename) }}" alt="{{ item.name }}">{% else %}<div class="card-placeholder"><span>BOARDING</span></div>{% endif %}
+      <div><span class="eyebrow blue">{{ item.status }}</span><h3>{{ item.name }}</h3><p>{{ item.description }}</p>
+      {% if item.capacity %}<p><strong>Capacity:</strong> {{ item.capacity }} learners</p>{% endif %}
+      {% if item.facilities %}<p><strong>Facilities:</strong> {{ item.facilities }}</p>{% endif %}</div>
+    </article>
+  {% else %}
+    <div class="empty empty-wide"><strong>Boarding information will appear here.</strong><span>The school can publish accommodation details through the administration panel.</span></div>
+  {% endfor %}
+  </div>
+</div></section>
+<section class="cta"><div class="container cta-inner"><div><span class="eyebrow">BOARDING ENQUIRIES</span><h2>Need more information?</h2><p>Contact the school for current boarding availability, requirements and fees.</p></div><a class="btn gold" href="{{ url_for('public.contact') }}">Contact the school →</a></div></section>
+{% endblock %}

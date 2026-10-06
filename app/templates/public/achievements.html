@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Achievements | {{ settings.school_name }}{% endblock %}
+{% block content %}
+<section class="pagehero"><div class="container narrow"><span class="eyebrow">EXCELLENCE & PROGRESS</span><h1>School Achievements</h1><p>Celebrating academic, sporting, cultural and community achievements.</p></div></section>
+<section class="section soft"><div class="container">
+  <div class="section-heading centered"><span class="eyebrow blue">OUR ACHIEVEMENTS</span><h2>Celebrating success.</h2><p>Achievements can be added and maintained by the school administration.</p></div>
+  <div class="cards">
+  {% for item in achievements %}
+    <article class="card">
+      {% if item.image_filename %}<img src="{{ url_for('public.image', filename=item.image_filename) }}" alt="{{ item.title }}">{% else %}<div class="card-placeholder"><span>{{ item.category|upper }}</span></div>{% endif %}
+      <div><small>{{ item.year or 'School achievement' }} · {{ item.category }}</small><h3>{{ item.title }}</h3><p>{{ item.description }}</p></div>
+    </article>
+  {% else %}
+    <div class="empty empty-wide"><strong>Achievements will appear here.</strong><span>Academic, sporting and other approved achievements will be published on this page.</span></div>
+  {% endfor %}
+  </div>
+</div></section>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Students Hierarchy | {{ settings.school_name }}{% endblock %}
+{% block content %}
+<section class="pagehero"><div class="container narrow"><span class="eyebrow">STUDENT LEADERSHIP</span><h1>Students Hierarchy</h1><p>An overview of learner leadership and responsibility within the school community.</p></div></section>
+<section class="section"><div class="container">
+  <div class="section-heading centered"><span class="eyebrow blue">LEADERSHIP STRUCTURE</span><h2>Students, leaders and responsibilities.</h2><p>The exact titles and responsibilities can be updated to match the school's approved structure.</p></div>
+  <div class="hierarchy">
+  {% for item in hierarchy %}
+    <div class="hierarchy-node"><span class="hierarchy-number">{{ loop.index }}</span><div><small>{{ item.level }}</small><h3>{{ item.title }}</h3><p>{{ item.description }}</p></div></div>
+  {% else %}
+    {% for level, title, description in [
+      ('Level 01','Head Prefect / Student Representative','Provides overall learner leadership and represents students in approved school activities.'),
+      ('Level 02','Deputy Head Prefects','Support the head student leaders and coordinate learner responsibilities.'),
+      ('Level 03','Prefects & Class Representatives','Help maintain student organisation, communication and positive conduct.'),
+      ('Level 04','All Students','Participate in learning, leadership, clubs, sport and community activities.')
+    ] %}
+    <div class="hierarchy-node"><span class="hierarchy-number">{{ loop.index }}</span><div><small>{{ level }}</small><h3>{{ title }}</h3><p>{{ description }}</p></div></div>
+    {% endfor %}
+  {% endfor %}
+  </div>
+</div></section>
+{% endblock %}

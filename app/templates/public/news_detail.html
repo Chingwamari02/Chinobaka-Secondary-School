@@ -1,0 +1,2 @@
+{%extends 'base.html'%}{%block content%}<section class="pagehero"><div class="container"><span class="eyebrow">{{item.published_at.strftime('%d %b %Y')}}</span><h1>{{item.title}}</h1></div></section><section class="section"><div class="container article">{%if item.image_filename%}<img src="{{url_for('public.image',filename=item.image_filename)}}" alt="{{item.title}}">{%endif%}<p class="lead">{{item.excerpt}}</p><div>{{item.body|replace('
+','<br>')|safe}}</div></div></section>{%endblock%}

@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}{{ settings.school_name or "Chinobaka Secondary School" }} | Home{% endblock %}
+
+{% block content %}
+<section class="hero hero-home {% if settings.hero_image_filename %}hasimg{% endif %}"{% if settings.hero_image_filename %} style="background-image:url('{{ url_for('public.image', filename=settings.hero_image_filename) }}')"{% endif %}>
+  <div class="heroover">
+    <div class="container heroct">
+      <span class="eyebrow">WELCOME TO {{ (settings.school_name or 'CHINOBAKA SECONDARY SCHOOL')|upper }}</span>
+      <h1>{{ settings.hero_title or 'Inspiring learning. Building futures.' }}</h1>
+      <p>{{ settings.hero_text or 'Discover a school community focused on learning, character, opportunity and the development of confident young people.' }}</p>
+      <div class="hero-actions">
+        <a class="btn gold" href="{{ url_for('public.admissions') }}">Explore admissions <span>→</span></a>
+        <a class="btn outline-light" href="{{ url_for('public.about') }}">Discover our school</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="quick container" aria-label="Quick links">
+  <a href="{{ url_for('public.academics') }}"><b>01</b><span>Academics<small>Learning & curriculum</small></span><i>→</i></a>
+  <a href="{{ url_for('public.admissions') }}"><b>02</b><span>Admissions<small>Join our community</small></span><i>→</i></a>
+  <a href="{{ url_for('public.news') }}"><b>03</b><span>Announcements<small>Latest school news</small></span><i>→</i></a>
+  <a href="{{ url_for('public.contact') }}"><b>04</b><span>Contact<small>Reach the school</small></span><i>→</i></a>
+</section>
+
+<section class="section intro-section">
+  <div class="container split intro-grid">
+    <div>
+      <span class="eyebrow blue">ABOUT CHINOBAKA</span>
+      <h2>A school community built around learning and opportunity.</h2>
+      <p>{{ settings.about_text or 'Official school information will be published here as it is confirmed and approved. This section will introduce the school, its community and its educational purpose.' }}</p>
+      <a class="text-link" href="{{ url_for('public.about') }}">Learn more about the school <span>→</span></a>
+    </div>
+    <div class="intro-panel">
+      <div class="panel-number">01</div>
+      <span class="eyebrow blue">OUR APPROACH</span>
+      <h3>Learning with purpose</h3>
+      <p>The website brings together school information, announcements, events, resources and communication in one accessible place.</p>
+      <div class="mini-line"></div>
+      <small>Official information will be updated through the school administration.</small>
+    </div>
+  </div>
+</section>
+
+<section class="section soft stats-section">
+  <div class="container">
+    <div class="section-heading centered">
+      <span class="eyebrow blue">EXPLORE THE SCHOOL</span>
+      <h2>Everything you need in one place.</h2>
+      <p>Explore the main areas of the Chinobaka Secondary School website.</p>
+    </div>
+    <div class="feature-grid">
+      <a class="feature-card" href="{{ url_for('public.academics') }}"><span class="feature-icon">01</span><h3>Academics</h3><p>Explore learning, curriculum information and academic resources.</p><span class="card-arrow">→</span></a>
+      <a class="feature-card" href="{{ url_for('public.admissions') }}"><span class="feature-icon">02</span><h3>Admissions</h3><p>Find admission information and guidance for prospective learners.</p><span class="card-arrow">→</span></a>
+      <a class="feature-card" href="{{ url_for('public.student_life') }}"><span class="feature-icon">03</span><h3>Student Life</h3><p>Discover activities, opportunities and the wider school experience.</p><span class="card-arrow">→</span></a>
+      <a class="feature-card" href="{{ url_for('public.downloads') }}"><span class="feature-icon">04</span><h3>Resources</h3><p>Access official school forms, notices and downloadable documents.</p><span class="card-arrow">→</span></a>
+      <a class="feature-card" href="{{ url_for('public.boarding') }}"><span class="feature-icon">05</span><h3>Boarding</h3><p>Explore boarding facilities, accommodation information and learner support.</p><span class="card-arrow">→</span></a>
+      <a class="feature-card" href="{{ url_for('public.achievements') }}"><span class="feature-icon">06</span><h3>Achievements</h3><p>Celebrate academic, sporting, cultural and community success.</p><span class="card-arrow">→</span></a>
+      <a class="feature-card" href="{{ url_for('public.student_hierarchy') }}"><span class="feature-icon">07</span><h3>Students</h3><p>Understand student leadership, responsibilities and the learner hierarchy.</p><span class="card-arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="section news-section">
+  <div class="container">
+    <div class="head section-heading-row">
+      <div><span class="eyebrow blue">LATEST FROM THE SCHOOL</span><h2>News & announcements</h2></div>
+      <a class="text-link" href="{{ url_for('public.news') }}">View all news <span>→</span></a>
+    </div>
+    <div class="cards">
+      {% for n in news %}
+      <article class="card news-card">
+        {% if n.image_filename %}<img src="{{ url_for('public.image', filename=n.image_filename) }}" alt="{{ n.title }}">{% else %}<div class="card-placeholder"><span>CHINOBAKA</span></div>{% endif %}
+        <div><small>{{ n.published_at.strftime('%d %b %Y') if n.published_at else 'School update' }}</small><h3>{{ n.title }}</h3><p>{{ n.excerpt or n.body[:140] }}</p><a class="text-link" href="{{ url_for('public.news_detail', slug=n.slug) }}">Read article <span>→</span></a></div>
+      </article>
+      {% else %}
+      <div class="empty empty-wide"><strong>School news will appear here.</strong><span>Published announcements from the administration will be displayed on this page.</span></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section events-section">
+  <div class="container">
+    <div class="head section-heading-row">
+      <div><span class="eyebrow blue">WHAT'S HAPPENING</span><h2>Upcoming events</h2></div>
+      <a class="text-link" href="{{ url_for('public.events') }}">View all events <span>→</span></a>
+    </div>
+    <div class="events">
+      {% for e in events %}
+      <a class="event" href="{{ url_for('public.events') }}">
+        <time><strong>{{ e.event_date.strftime('%d') }}</strong><small>{{ e.event_date.strftime('%b') }}</small></time>
+        <div><span class="event-label">SCHOOL EVENT</span><h3>{{ e.title }}</h3><p>{{ e.description or 'School event' }}{% if e.location %} · {{ e.location }}{% endif %}</p></div><span class="event-arrow">→</span>
+      </a>
+      {% else %}
+      <div class="empty empty-wide"><strong>Upcoming events will appear here.</strong><span>School events will be published as they are confirmed.</span></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% if gallery %}
+<section class="section soft gallery-preview">
+  <div class="container">
+    <div class="head section-heading-row"><div><span class="eyebrow blue">SCHOOL LIFE</span><h2>Gallery</h2></div><a class="text-link" href="{{ url_for('public.gallery') }}">View gallery <span>→</span></a></div>
+    <div class="home-gallery">{% for item in gallery %}<a href="{{ url_for('public.gallery') }}" aria-label="View {{ item.title }}"><img src="{{ url_for('public.image', filename=item.image_filename) }}" alt="{{ item.title }}{% if item.caption %} — {{ item.caption }}{% endif %}"></a>{% endfor %}</div>
+  </div>
+</section>
+{% endif %}
+
+<section class="cta cta-home">
+  <div class="container cta-inner">
+    <div><span class="eyebrow">CONNECT WITH THE SCHOOL</span><h2>Have a question or enquiry?</h2><p>Use the contact page to send a message to the school administration.</p></div>
+    <a class="btn gold" href="{{ url_for('public.contact') }}">Contact the school <span>→</span></a>
+  </div>
+</section>
+{% endblock %}
